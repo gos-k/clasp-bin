@@ -14,4 +14,4 @@ jobs:
           cd clasp && ./waf configure build_dboehm
       - name: test
         run: |
-          clasp/build/clasp -v
+          clasp/build/boehm/iclasp-boehm -e '(core:quit)'
