@@ -11,6 +11,8 @@ jobs:
       - name: build
         run: |
           git clone https://github.com/clasp-developers/clasp
+          echo "USE_PARALLEL_BUILD  = True" > wscript.config
+          echo "LINK_STATIC = True" >> wscript.config
           cd clasp && ./waf configure build_dboehm
       - name: test
         run: |
