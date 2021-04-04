@@ -12,3 +12,6 @@ jobs:
         run: |
           git clone https://github.com/clasp-developers/clasp
           cd clasp && ./waf configure build_dboehm
+      - name: test
+        run: |
+          clasp/build/clasp -v
