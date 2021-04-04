@@ -7,7 +7,7 @@ jobs:
       - name: install
         run: |
           sudo apt update
-          sudo apt -y install clang-9 cmake libgc-dev libgmp-dev binutils-gold binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
+          sudo apt -y install clang-9 clang-tools-9 cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
       - name: build
         run: |
           git clone https://github.com/clasp-developers/clasp
