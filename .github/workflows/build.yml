@@ -29,7 +29,7 @@ jobs:
 
       - name: build
         run: |
-          cd clasp_bin/clasp && git checkout `cat ~/clasp_bin/hash`
+          cd clasp_bin/clasp && git checkout `cat ../hash`
           echo "USE_PARALLEL_BUILD  = True" > clasp_bin/clasp/wscript.config
           echo "LINK_STATIC = True" >> clasp_bin/clasp/wscript.config
           cd clasp_bin/clasp && ./waf configure build_dboehm
