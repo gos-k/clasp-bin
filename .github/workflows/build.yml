@@ -16,9 +16,17 @@ jobs:
           sudo apt update
           sudo apt -y install clang-9 libclang-9-dev cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
 
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: checkout clasp
+        uses: actions/checkout@v2
+        with:
+          repository: clasp-developers/clasp
+          path: clasp
+
       - name: build
         run: |
-          git clone https://github.com/clasp-developers/clasp
           cd clasp && git checkout `cat ~/hash`
           echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
           echo "LINK_STATIC = True" >> clasp/wscript.config
