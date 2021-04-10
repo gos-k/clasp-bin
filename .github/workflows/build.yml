@@ -19,9 +19,11 @@ jobs:
       - name: build
         run: |
           #git clone https://github.com/clasp-developers/clasp
-          #echo "USE_PARALLEL_BUILD  = True" > wscript.config
-          #echo "LINK_STATIC = True" >> wscript.config
+          #cd clasp && git checkout `cat ../hash`
+          #echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
+          #echo "LINK_STATIC = True" >> clasp/wscript.config
           #cd clasp && ./waf configure build_dboehm
+          ls
           mkdir -p clasp/build
           echo dummy > clasp/build/dummy.file
           tar czf clasp-${{ env.VERSION }}.tar.gz clasp/build
