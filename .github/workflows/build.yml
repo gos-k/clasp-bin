@@ -1,9 +1,16 @@
 name: CI
-on: push
+on:
+  push:
+    tags: [ "*" ]
+
 jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
+      - name: version
+        run: |
+          echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
+
       - name: install
         run: |
           #sudo apt update
@@ -17,7 +24,7 @@ jobs:
           #cd clasp && ./waf configure build_dboehm
           mkdir -p clasp/build
           echo dummy > clasp/build/dummy.file
-          tar czf clasp-${{ github.event.ref }}.tar.gz clasp/build
+          tar czf clasp-${{ env.VERSION }}.tar.gz clasp/build
 
       - name: test
         run: |
