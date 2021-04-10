@@ -6,14 +6,40 @@ jobs:
     steps:
       - name: install
         run: |
-          sudo apt update
-          sudo apt -y install clang-9 libclang-9-dev cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
+          #sudo apt update
+          #sudo apt -y install clang-9 libclang-9-dev cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
+
       - name: build
         run: |
-          git clone https://github.com/clasp-developers/clasp
-          echo "USE_PARALLEL_BUILD  = True" > wscript.config
-          echo "LINK_STATIC = True" >> wscript.config
-          cd clasp && ./waf configure build_dboehm
+          #git clone https://github.com/clasp-developers/clasp
+          #echo "USE_PARALLEL_BUILD  = True" > wscript.config
+          #echo "LINK_STATIC = True" >> wscript.config
+          #cd clasp && ./waf configure build_dboehm
+          mkdir -p clasp/build
+          echo dummy > clasp/build/dummy.file
+          tar czf clasp.tar.gz clasp/build
+
       - name: test
         run: |
-          clasp/build/boehm/iclasp-boehm -e '(core:quit)'
+            #clasp/build/boehm/iclasp-boehm -e '(core:quit)'
+
+      - name: release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: true
+          prerelease: false
+
+      - name: upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_name: clasp.tar.gz
+          asset_path: ./clasp.tar.gz
+          asset_content_type: application/gzip
