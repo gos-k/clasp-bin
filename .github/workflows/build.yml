@@ -22,7 +22,7 @@ jobs:
       - name: checkout clasp
         uses: actions/checkout@v2
         with:
-          name: clasp-developers/clasp
+          repository: clasp-developers/clasp
           path: clasp
 
       - name: build
