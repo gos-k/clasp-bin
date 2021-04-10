@@ -19,7 +19,7 @@ jobs:
       - name: build
         run: |
           git clone https://github.com/clasp-developers/clasp
-          cd clasp && git checkout `cat ../hash`
+          cd clasp && git checkout `cat ~/hash`
           echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
           echo "LINK_STATIC = True" >> clasp/wscript.config
           cd clasp && ./waf configure build_dboehm
