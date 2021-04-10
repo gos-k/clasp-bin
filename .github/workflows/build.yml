@@ -33,6 +33,7 @@ jobs:
           echo "USE_PARALLEL_BUILD  = True" > wscript.config
           echo "LINK_STATIC = True" >> wscript.config
           ./waf configure build_dboehm
+          make
           tar czf ../clasp-${{ env.VERSION }}.tar.gz build
 
       - name: test
