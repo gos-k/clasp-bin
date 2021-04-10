@@ -13,19 +13,16 @@ jobs:
 
       - name: install
         run: |
-          #sudo apt update
-          #sudo apt -y install clang-9 libclang-9-dev cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
+          sudo apt update
+          sudo apt -y install clang-9 libclang-9-dev cmake libgc-dev libgmp-dev binutils-dev zlib1g-dev libncurses-dev libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev libboost-program-options-dev libboost-system-dev libboost-iostreams-dev libunwind-dev liblzma-dev libelf1 libelf-dev libbsd-dev sbcl
 
       - name: build
         run: |
-          #git clone https://github.com/clasp-developers/clasp
-          #cd clasp && git checkout `cat ../hash`
-          #echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
-          #echo "LINK_STATIC = True" >> clasp/wscript.config
-          #cd clasp && ./waf configure build_dboehm
-          ls
-          mkdir -p clasp/build
-          echo dummy > clasp/build/dummy.file
+          git clone https://github.com/clasp-developers/clasp
+          cd clasp && git checkout `cat ../hash`
+          echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
+          echo "LINK_STATIC = True" >> clasp/wscript.config
+          cd clasp && ./waf configure build_dboehm
           tar czf clasp-${{ env.VERSION }}.tar.gz clasp/build
 
       - name: test
