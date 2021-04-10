@@ -23,11 +23,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           name: clasp-developers/clasp
-          ref: `cat ../hash`
           path: clasp
 
       - name: build
         run: |
+          cd clasp && git checkout `../hash`
           echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
           echo "LINK_STATIC = True" >> clasp/wscript.config
           cd clasp && ./waf configure build_dboehm
