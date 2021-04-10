@@ -47,6 +47,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: clasp.tar.gz
-          asset_path: ./clasp.tar.gz
+          asset_name: clasp-${{ env.VERSION }}.tar.gz
+          asset_path: ./clasp-${{ env.VERSION }}.tar.gz
           asset_content_type: application/gzip
