@@ -18,24 +18,26 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          path: clasp_bin
 
       - name: checkout clasp
         uses: actions/checkout@v2
         with:
           repository: clasp-developers/clasp
-          path: clasp
+          path: clasp_bin/clasp
 
       - name: build
         run: |
-          cd clasp && git checkout `cat ~/hash`
-          echo "USE_PARALLEL_BUILD  = True" > clasp/wscript.config
-          echo "LINK_STATIC = True" >> clasp/wscript.config
-          cd clasp && ./waf configure build_dboehm
-          tar czf clasp-${{ env.VERSION }}.tar.gz clasp/build
+          cd clasp_bin/clasp && git checkout `cat ~/clasp_bin/hash`
+          echo "USE_PARALLEL_BUILD  = True" > clasp_bin/clasp/wscript.config
+          echo "LINK_STATIC = True" >> clasp_bin/clasp/wscript.config
+          cd clasp_bin/clasp && ./waf configure build_dboehm
+          tar czf clasp-${{ env.VERSION }}.tar.gz clasp_bin/clasp/build
 
       - name: test
         run: |
-            #clasp/build/boehm/iclasp-boehm -e '(core:quit)'
+            clasp_bin/clasp/build/boehm/iclasp-boehm -e '(core:quit)'
 
       - name: release
         id: create_release
