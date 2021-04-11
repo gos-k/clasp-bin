@@ -30,7 +30,7 @@ jobs:
           echo "LINK_STATIC = True" >> wscript.config
           ./waf configure build_dboehm
           make
-          tar czf ../clasp-${{ steps.version.outputs.VERSION }}.tar.gz build
+          tar czf ../clasp-${{ steps.version.outputs.VERSION }}.tar.gz build/boehm
 
       - name: test
         run: |
