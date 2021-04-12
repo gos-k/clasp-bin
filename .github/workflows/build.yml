@@ -2,8 +2,6 @@ name: CI
 on:
   push:
     tags: [ "*" ]
-env:
-  LANG: "C"
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -37,8 +35,8 @@ jobs:
 
       - name: archive
         run: |
-          rm build/clasp build/cclasp-boehm
-          mv build clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
+          rm clasp/build/clasp clasp/build/cclasp-boehm
+          mv clasp/build clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
           tar czf ../clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux.tar.gz clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
 
       - name: release
