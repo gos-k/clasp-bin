@@ -6,10 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - name: version
-        id: version
+      - name: env
+        id: env
         run: |
           echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
+          echo "::set-output name=DIR::clasp-${{ steps.env.outputs.VERSION }}-x86-64-linux"
+          echo "::set-output name=FILE::clasp-${{ steps.env.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
 
       - name: install
         run: |
@@ -21,9 +23,8 @@ jobs:
 
       - name: build
         run: |
-          echo "::set-output name=DIR::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux"
-          git clone https://github.com/clasp-developers/clasp ${{ steps.build.outputs.DIR }}
-          cd ${{ steps.build.outputs.DIR }}
+          git clone https://github.com/clasp-developers/clasp ${{ steps.env.outputs.DIR }}
+          cd ${{ steps.env.outputs.DIR }}
           git checkout `cat ../hash`
           echo "USE_PARALLEL_BUILD  = True" > wscript.config
           echo "LINK_STATIC = True" >> wscript.config
@@ -32,14 +33,13 @@ jobs:
 
       - name: test
         run: |
-          ${{ steps.build.outputs.DIR }}/build/boehm/iclasp-boehm -e '(core:quit)'
+          ${{ steps.env.outputs.DIR }}/build/boehm/iclasp-boehm -e '(core:quit)'
 
       - name: archive
         run: |
-          echo "::set-output name=FILE::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
-          rm ${{ steps.build.outputs.DIR }}/build/clasp
-          rm ${{ steps.build.outputs.DIR }}/clasp/build/boehm/cclasp-boehm
-          tar czf ${{ steps.version.archive.FILE }} ${{ steps.build.outputs.DIR }}/build
+          rm ${{ steps.env.outputs.DIR }}/build/clasp
+          rm ${{ steps.env.outputs.DIR }}/build/boehm/cclasp-boehm
+          tar czf ${{ steps.env.archive.FILE }} ${{ steps.env.outputs.DIR }}/build
 
       - name: release
         id: create_release
@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: ${{ steps.version.archive.FILE }}
-          asset_path: ./${{ steps.version.archive.FILE }}
+          asset_name: ${{ steps.env.archive.FILE }}
+          asset_path: ./${{ steps.env.archive.FILE }}
           asset_content_type: application/gzip
