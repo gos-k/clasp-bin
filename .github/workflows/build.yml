@@ -21,7 +21,7 @@ jobs:
 
       - name: build
         run: |
-          echo "::set-output neme=DIR::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux"
+          echo "::set-output name=DIR::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux"
           git clone https://github.com/clasp-developers/clasp ${{ steps.build.outputs.DIR }}
           cd ${{ steps.build.outputs.DIR }}
           git checkout `cat ../hash`
@@ -36,7 +36,7 @@ jobs:
 
       - name: archive
         run: |
-          echo "::set-output neme=FILE::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
+          echo "::set-output name=FILE::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
           rm ${{ steps.build.outputs.DIR }}/build/clasp
           rm ${{ steps.build.outputs.DIR }}/clasp/build/boehm/cclasp-boehm
           tar czf ${{ steps.version.archive.FILE }} ${{ steps.build.outputs.DIR }}/build
