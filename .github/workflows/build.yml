@@ -21,8 +21,9 @@ jobs:
 
       - name: build
         run: |
-          git clone https://github.com/clasp-developers/clasp clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
-          cd clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
+          echo "::set-output neme=DIR::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux"
+          git clone https://github.com/clasp-developers/clasp ${{ steps.build.outputs.DIR }}
+          cd ${{ steps.build.outputs.DIR }}
           git checkout `cat ../hash`
           echo "USE_PARALLEL_BUILD  = True" > wscript.config
           echo "LINK_STATIC = True" >> wscript.config
@@ -31,13 +32,14 @@ jobs:
 
       - name: test
         run: |
-          clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux/build/boehm/iclasp-boehm -e '(core:quit)'
+          ${{ steps.build.outputs.DIR }}/build/boehm/iclasp-boehm -e '(core:quit)'
 
       - name: archive
         run: |
-          rm clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux/build/clasp
-          rm clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux/build/boehm/cclasp-boehm
-          tar czf clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux.tar.gz clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux
+          echo "::set-output neme=FILE::clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
+          rm ${{ steps.build.outputs.DIR }}/build/clasp
+          rm ${{ steps.build.outputs.DIR }}/clasp/build/boehm/cclasp-boehm
+          tar czf ${{ steps.version.archive.FILE }} ${{ steps.build.outputs.DIR }}/build
 
       - name: release
         id: create_release
@@ -56,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux.tar.gz
-          asset_path: ./clasp-${{ steps.version.outputs.VERSION }}-x86-64-linux.tar.gz
+          asset_name: ${{ steps.version.archive.FILE }}
+          asset_path: ./${{ steps.version.archive.FILE }}
           asset_content_type: application/gzip
