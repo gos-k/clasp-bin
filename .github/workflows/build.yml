@@ -39,7 +39,7 @@ jobs:
         run: |
           rm ${{ steps.env.outputs.DIR }}/build/clasp
           rm ${{ steps.env.outputs.DIR }}/build/boehm/cclasp-boehm
-          tar czf ${{ steps.env.archive.FILE }} ${{ steps.env.outputs.DIR }}/build
+          tar czf ${{ steps.env.outputs.FILE }} ${{ steps.env.outputs.DIR }}/build
 
       - name: release
         id: create_release
@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: ${{ steps.env.archive.FILE }}
-          asset_path: ./${{ steps.env.archive.FILE }}
+          asset_name: ${{ steps.env.outputs.FILE }}
+          asset_path: ./${{ steps.env.outputs.FILE }}
           asset_content_type: application/gzip
