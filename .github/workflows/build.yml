@@ -10,9 +10,8 @@ jobs:
         id: env
         run: |
           echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
-          echo "::set-output name=DIR::clasp-${{ steps.env.outputs.VERSION }}-x86-64-linux"
-          echo "::set-output name=FILE::clasp-${{ steps.env.outputs.VERSION }}-x86-64-linux-binary.tar.gz"
-
+          echo "::set-output name=DIR::clasp-${GITHUB_REF#refs/tags/}-x86-64-linux"
+          echo "::set-output name=FILE::clasp-${GITHUB_REF#refs/tags/}-x86-64-linux-binary.tar.gz"
       - name: install
         run: |
           sudo apt update
