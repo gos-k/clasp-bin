@@ -22,7 +22,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: build
+      - name: build_boehm
         run: |
           git clone https://github.com/clasp-developers/clasp-boehm
           cd clasp-boehm
@@ -32,6 +32,8 @@ jobs:
           make build
           make -C gc-8.0.4 install
 
+      - name: build_clasp
+        run: |
           git clone https://github.com/clasp-developers/clasp ${{ steps.env.outputs.DIR }}
           cd ${{ steps.env.outputs.DIR }}
           git checkout `cat ../hash`
@@ -42,10 +44,14 @@ jobs:
           ./waf distclean
           ./waf configure
           ./waf build_dboehmprecise
-          make
 
       - name: test
         run: |
+          pwd
+          ls
+          ls ${{ steps.env.outputs.DIR }}/
+          ls ${{ steps.env.outputs.DIR }}/build/
+          ls ${{ steps.env.outputs.DIR }}/build/boehmprecise/
           ${{ steps.env.outputs.DIR }}/build/boehmprecise/iclasp-boehmprecise -e '(core:quit)'
 
       - name: archive
