@@ -47,17 +47,12 @@ jobs:
 
       - name: test
         run: |
-          pwd
-          ls
-          ls ${{ steps.env.outputs.DIR }}/
-          ls ${{ steps.env.outputs.DIR }}/build/
-          ls ${{ steps.env.outputs.DIR }}/build/boehmprecise/
           ${{ steps.env.outputs.DIR }}/build/boehmprecise/iclasp-boehmprecise -e '(core:quit)'
 
       - name: archive
         run: |
-          rm ${{ steps.env.outputs.DIR }}/build/clasp
-          rm ${{ steps.env.outputs.DIR }}/build/boehmprecise/iclasp-boehmprecise
+          #rm ${{ steps.env.outputs.DIR }}/build/clasp
+          #rm ${{ steps.env.outputs.DIR }}/build/boehmprecise/iclasp-boehmprecise
           tar czf ${{ steps.env.outputs.FILE }} ${{ steps.env.outputs.DIR }}/build
 
       - name: release
