@@ -32,6 +32,7 @@ jobs:
           make build
           make -C gc-8.0.4 install
 
+
       - name: build_clasp
         run: |
           git clone https://github.com/clasp-developers/clasp ${{ steps.env.outputs.DIR }}
@@ -40,10 +41,17 @@ jobs:
           cp wscript.config.debian10 wscript.config
           echo 'INCLUDES = ["/opt/clasp-support/include"]' >> wscript.config
           echo 'LINKFLAGS = ["-L/opt/clasp-support/lib"]' >> wscript.config
+          echo 'LINK_STATIC = True' >> wscript.config
           #patch -p1 < ../clasp.patch
           ./waf distclean
           ./waf configure
           ./waf build_dboehmprecise
+          cd build
+          rm -f clasp
+          ln -s boehmprecise/clasp
+          cd boehm
+          rm -f iclasp-boehm
+          ln -s ../boehmprecise/clasp iclasp-boehm
 
       - name: test
         run: |
